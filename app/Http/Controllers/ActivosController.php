@@ -48,7 +48,7 @@ class ActivosController extends Controller
         $validacion = Validator::make($req->json()->all(), [
             "objeto" => "required|string",
             "cantidad" => "nullable|integer",
-            "precio" => "required|numeric"
+            "precio_unidad" => "required|numeric"
         ]);
 
         if ($validacion->fails()) {
@@ -56,7 +56,7 @@ class ActivosController extends Controller
         };
 
         try {
-            if (Activos::Crear($req->json("objeto"), $req->json("cantidad"), $req->json("precio"))) {
+            if (Activos::Crear($req->json("objeto"), $req->json("cantidad"), $req->json("precio_unidad"))) {
                 return response()->json(["mensaje" => "Activo registrado correctamente"], 201);
             } else {
                 return response()->json(["mensaje" => "No se pudo registrar el activo"], 400);
