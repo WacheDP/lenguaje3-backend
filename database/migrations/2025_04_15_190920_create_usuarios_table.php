@@ -12,17 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("roles", function (Blueprint $table) {
-            $table->char("id", 36)->primary()->default(DB::raw('UUID()'));
-            $table->string("rol", 20);
-            $table->json("permisos");
-        });
-
         Schema::create("usuarios", function (Blueprint $tabla) {
             $tabla->char("id", 36)->primary()->default(DB::raw("UUID()"));
             $tabla->string("nombre", 30)->unique();
             $tabla->string("correo", 100)->unique()->nullable();
             $tabla->string("contraseña", 60);
+            $tabla->char("rol", 36);
+            $tabla->foreign("rol")->references("id")->on("roles");
             $tabla->text("token");
             $tabla->string("estado", 20)->default("Habilitado");
             $tabla->timestamp("creado")->default(DB::raw("CURRENT_TIMESTAMP"));
@@ -35,7 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists("roles");
         Schema::dropIfExists("usuarios");
     }
 };

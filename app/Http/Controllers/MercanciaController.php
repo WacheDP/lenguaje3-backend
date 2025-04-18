@@ -70,7 +70,7 @@ class MercanciaController extends Controller
             )) {
                 return response()->json(["mensaje" => "Mercancia registrada correctamente"], 200);
             } else {
-                return response()->json(["mensaje" => "No se pudo registrar la mercancia"], 400);
+                return response()->json(["mensaje" => "No se pudo registrar la mercancia"], 404);
             };
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 500);
@@ -89,7 +89,7 @@ class MercanciaController extends Controller
         ]);
 
         if ($validacion->fails()) {
-            return response()->json(["error" => $validacion->errors()], 400);
+            return response()->json(["error" => $validacion->errors()], 404);
         };
 
         try {

@@ -52,14 +52,14 @@ class ActivosController extends Controller
         ]);
 
         if ($validacion->fails()) {
-            return response()->json(["error" => $validacion->errors()], 400);
+            return response()->json(["error" => $validacion->errors()], 404);
         };
 
         try {
             if (Activos::Crear($req->json("objeto"), $req->json("cantidad"), $req->json("precio_unidad"))) {
                 return response()->json(["mensaje" => "Activo registrado correctamente"], 201);
             } else {
-                return response()->json(["mensaje" => "No se pudo registrar el activo"], 400);
+                return response()->json(["mensaje" => "No se pudo registrar el activo"], 404);
             };
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 500);
@@ -77,7 +77,7 @@ class ActivosController extends Controller
         ]);
 
         if ($validacion->fails()) {
-            return response()->json(["error" => $validacion->errors()], 400);
+            return response()->json(["error" => $validacion->errors()], 404);
         };
 
         try {

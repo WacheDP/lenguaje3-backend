@@ -98,4 +98,6 @@ class Activos extends Model
     {
         return DB::delete("DELETE FROM activos WHERE id = ?", [$id]);
     }
+
+    public static function Buscar() {}
 }

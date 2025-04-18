@@ -9,7 +9,8 @@ class Usuarios extends Model
 {
     public static function Todos($filtro, $orden, $limite, $salto)
     {
-        $cadena = "SELECT u.id, u.nombre, u.correo, u.estado, u.creado, u.actualizado FROM usuarios AS u ";
+        $cadena = "SELECT u.id, u.nombre, u.correo, u.estado, u.creado, u.actualizado, r.rol ";
+        $cadena .= "FROM usuarios AS u INNER JOIN roles AS r ON u.rol = r.id";
         $valores = [];
 
         if (!empty($filtro)) {
@@ -27,5 +28,13 @@ class Usuarios extends Model
         $consultas = DB::select($cadena, $valores);
 
         return ["filas" => $total, "datos" => $consultas];
+    }
+
+    public static function Crear($usuario, $email, $clave, $nivel)
+    {
+        return DB::insert(
+            "INSERT INTO usuarios(nombre, correo, contraseña, rol) VALUES (?, ?, ?, ?)",
+            [$usuario, $email, $clave, $nivel]
+        );
     }
 }
