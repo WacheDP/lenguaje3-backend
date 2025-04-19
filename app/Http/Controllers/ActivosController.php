@@ -73,7 +73,7 @@ class ActivosController extends Controller
             "cantidad" => "nullable|integer",
             "adquisicion" => "nullable|date",
             "precio_unidad" => "nullable|numeric",
-            "estado" => "nullable|string"
+            "estado" => "nullable|string|in:En buen estado,En mal estado"
         ]);
 
         if ($validacion->fails()) {

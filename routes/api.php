@@ -31,7 +31,11 @@ Route::get("/roles", [RolesController::class, "Todos"]);
 
 //Usuarios
 Route::get("/usuarios", [UsuariosController::class, "Todos"]);
+Route::get("/usuarios/{id}", [UsuariosController::class, "Uno"]);
 Route::post("/usuarios", [UsuariosController::class, "Crear"]);
+Route::post("/login", [UsuariosController::class, "Login"]);
+Route::put("/usuarios/{id}", [UsuariosController::class, "Actualizar"]);
+Route::delete("/usuarios/{id}", [UsuariosController::class, "Eliminar"]);
 
 //Clientes
 Route::get("/clientes", [ClientesController::class, "Todos"]);

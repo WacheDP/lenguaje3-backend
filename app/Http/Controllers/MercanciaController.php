@@ -85,7 +85,7 @@ class MercanciaController extends Controller
             "cantidad" => "nullable|integer",
             "precio_unidad" => "nullable|numeric",
             "adquisicion" => "nullable|date",
-            "estado" => "nullable|string"
+            "estado" => "nullable|string|in:En buen estado,En mal estado"
         ]);
 
         if ($validacion->fails()) {
