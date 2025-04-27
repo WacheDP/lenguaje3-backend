@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create("mercancia", function (Blueprint $tabla) {
-            $tabla->char("id", 36)->primary()->default(DB::raw("UUID()"));
+            $tabla->uuid("id")->primary();
             $tabla->string("producto", 30);
-            $tabla->string("presentacion", 30);
             $tabla->integer("cantidad");
+            $tabla->date("adquisicion");
             $tabla->float("precio_unidad", 2);
-            $tabla->date("adquisicion")->default(DB::raw("CURRENT_DATE"));
-            $tabla->string("estado", 20)->default("En buen estado");
-            $tabla->timestamp("creado")->default(DB::raw("CURRENT_TIMESTAMP"));
-            $tabla->timestamp("actualizado")->default(DB::raw("CURRENT_TIMESTAMP"));
+            $tabla->string("estado", 15)->default("En buen estado");
+            $tabla->timestamp("creado")->useCurrent();
+            $tabla->timestamp("actualizado")->useCurrent()->useCurrentOnUpdate();
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mercancia');
+        Schema::dropIfExists("mercancia");
     }
 };
