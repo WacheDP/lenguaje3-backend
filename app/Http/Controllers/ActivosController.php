@@ -11,11 +11,21 @@ class ActivosController extends Controller
 {
     public function Listar(Request $req)
     {
-        $busqueda = $req->json("filtro", "");
-        $limite = $req->json("limite", 10);
+        $validacion = Validator::make($req->json()->all(), [
+            "limite" => "required|integer",
+            "orden" => "required|in:desc,asc"
+        ]);
 
-        $activos = Activos::where("objeto", "like", "%$busqueda%")
-            ->orderBy("objeto", $req->json("orden"))->paginate($limite);
+        if ($validacion->fails()) {
+            return response()->json(["error" => $validacion->errors()], 422);
+        };
+
+        $activos = Activos::orderBy("objeto", $req->json("orden"))
+            ->paginate($req->json("limite"));
+
+        if (count($activos) == 0) {
+            response()->json(["mensaje" => "No hay activos registrados"], 200);
+        };
 
         return response()->json(["datos" => $activos], 200);
     }
@@ -44,5 +54,61 @@ class ActivosController extends Controller
             "mensaje" => "Activo registrado correctamente",
             "datos" => $activo
         ], 201);
+    }
+
+    public function Actualizar(Request $req, $id)
+    {
+        $validacion = Validator::make($req->json()->all(), [
+            "objeto" => "nullable|string",
+            "cantidad" => "nullable|integer",
+            "adquisicion" => "nullable|date",
+            "estado" => "nullable|string|in:En buen estado,En mal estado"
+        ]);
+
+        if ($validacion->fails()) {
+            return response()->json(["error" => $validacion->errors()], 422);
+        };
+
+        $activo = Activos::find($id);
+
+        if (empty($activo)) {
+            return response()->json(["mensaje" => "Activo no encontrado"], 404);
+        };
+
+        if (!empty($req->json("objeto"))) {
+            $activo->objeto = $req->json("objeto");
+        };
+
+        if (!empty($req->json("cantidad"))) {
+            $activo->cantidad = $req->json("cantidad");
+        };
+
+        if (!empty($req->json("adquisicion"))) {
+            $activo->adquisicion = $req->json("adquisicion");
+        };
+
+        if (!empty($req->json("estado"))) {
+            $activo->estado = $req->json("estado");
+        };
+
+        $activo->save();
+
+        return response()->json([
+            "mensaje" => "Activo actualizado correctamente",
+            "activo" => $activo
+        ], 200);
+    }
+
+    public function Eliminar($id)
+    {
+        $activo = Activos::find($id);
+
+        if (empty($activo)) {
+            return response()->json(["mensaje" => "Activo no encontrado"], 404);
+        };
+
+        $activo->delete();
+
+        return response()->json(["mensaje" => "Activo eliminado correctamente"], 200);
     }
 }
