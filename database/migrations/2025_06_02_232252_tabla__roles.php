@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create("roles", function (Blueprint $tabla) {
             $tabla->uuid("id")->primary();
-            $tabla->string("rol", 30);
+            $tabla->string("rol", 13);
             $tabla->json("permisos");
         });
     }

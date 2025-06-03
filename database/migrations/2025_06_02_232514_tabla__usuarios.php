@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create("usuarios", function (Blueprint $tabla) {
             $tabla->uuid("id")->primary();
-            $tabla->string("usuario", 20)->unique();
-            $tabla->string("correo", 100)->unique();
-            $tabla->string("contraseña", 100);
+            $tabla->string("usuario", 30)->unique();
+            $tabla->string("correo", 100)->nullable()->unique();
+            $tabla->string("contraseña", 60);
             $tabla->uuid("rol");
             $tabla->foreign("rol")->references("id")->on("roles");
-            $tabla->string("estado", 15)->default("Habilitado");
-            $tabla->timestamp("creado")->useCurrent();
-            $tabla->timestamp("actualizado")->useCurrent()->useCurrentOnUpdate();
+            $tabla->string("estado", 1)->default("A");
+            $tabla->timestamp("creado")->useCurrent()->useCurrentOnUpdate();
+            $tabla->timestamp("actualizacion")->useCurrent()->useCurrentOnUpdate();
         });
     }
 

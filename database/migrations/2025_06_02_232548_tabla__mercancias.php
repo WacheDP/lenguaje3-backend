@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("ventas", function (Blueprint $tabla) {
+        Schema::create("mercancia", function (Blueprint $tabla) {
             $tabla->uuid("id")->primary();
-            $tabla->uuid("cliente");
-            $tabla->foreign("cliente")->references("id")->on("clientes");
-            $tabla->float("total", 2);
-            $tabla->date("fecha");
-            $tabla->string("estado", 15)->default("En deuda");
-            $tabla->timestamp("creado")->useCurrent();
+            $tabla->string("producto", 20);
+            $tabla->integer("cantidad");
+            $tabla->date("adquisicion");
+            $tabla->float("precio_unidad", 2);
+            $tabla->string("estado", 1)->default("B");
+            $tabla->timestamp("creado")->useCurrent()->useCurrentOnUpdate();
             $tabla->timestamp("actualizado")->useCurrent()->useCurrentOnUpdate();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists("ventas");
+        Schema::dropIfExists("mercancia");
     }
 };
