@@ -50,7 +50,7 @@ class UsuariosControlador extends Controller
             $validacion = Validator::make(["pagina" => $pagina], ["pagina" => "required|integer"]);
 
             if ($validacion->fails()) {
-                return response()->json(["validacion" => "La página debe ser un número"], 400);
+                return response()->json(["validacion" => $validacion->errors()], 400);
             };
 
             $lista = Usuarios::with("cliente")->paginate(6, ["*"], "pagina", $pagina);
